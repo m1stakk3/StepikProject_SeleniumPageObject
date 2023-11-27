@@ -1,14 +1,18 @@
-from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
 import math
+import logging
+
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
 
 
 class BasePage:
     def __init__(self, browser, url, timeout=10):
+        logging.info("Creating browser exemplar")
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout)
 
     def open(self):
+        logging.info("Getting url: {}".format(self.url))
         self.browser.get(self.url)
 
     def is_element_present(self, how, what):
@@ -27,7 +31,7 @@ class BasePage:
         try:
             alert = self.browser.switch_to.alert
             alert_text = alert.text
-            print(f"Your code: {alert_text}")
+            logging.info(f"Your code: {alert_text}")
             alert.accept()
         except NoAlertPresentException:
-            print("No second alert presented")
+            logging.error("No second alert presented")

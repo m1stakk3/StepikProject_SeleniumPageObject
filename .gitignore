@@ -1,0 +1,5 @@
+.gitignore
+.pytest_cache
+allure-results
+venv
+*.txt

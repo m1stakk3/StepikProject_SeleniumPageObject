@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 
 
 class MainPageLocators:
-    LOGIN_LINK = (By.ID, "login_link")
+    LOGIN_LINK = (By.XPATH, '//a[@id="login_link"]')
 
 
 class ItemPageLocators:
@@ -14,3 +14,4 @@ class ItemPageLocators:
 class AfterAddToBasketPageLocators:
     ITEM_NAME = (By.CSS_SELECTOR, "#messages > div:nth-child(1) > div > strong")
     PRICE = (By.CSS_SELECTOR, "#messages > div.alert.alert-safe.alert-noicon.alert-info.fade.in > div > p:nth-child(1) > strong")
+

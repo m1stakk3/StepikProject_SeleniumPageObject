@@ -4,6 +4,9 @@ from pages.locators import MainPageLocators, ItemPageLocators, AfterAddToBasketP
 
 class MainPage(BasePage):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def go_to_login_page(self):
         login_link = self.browser.find_element(*MainPageLocators.LOGIN_LINK)
         login_link.click()
@@ -33,6 +36,3 @@ class ItemPage(BasePage):
     def check_item_price_in_basket(self, item_price):
         info = self.browser.find_element(*AfterAddToBasketPageLocators.PRICE).text
         assert info == item_price, "Item price in basket not equals before addition"
-
-
-
