@@ -29,4 +29,5 @@ def browser(language):
     # запуск браузера с языковыми настройками и работа до прекращения использования
     browser = webdriver.Chrome(options=options)
     yield browser
+
     browser.quit()

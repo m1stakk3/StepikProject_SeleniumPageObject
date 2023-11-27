@@ -16,10 +16,13 @@ class BasePage:
         self.browser.get(self.url)
 
     def is_element_present(self, how, what):
+        logging.info("Trying to check presence of element")
         try:
             self.browser.find_element(how, what)
         except NoSuchElementException:
+            logging.error(NoSuchElementException)
             return False
+        logging.info("Element is present!")
         return True
 
     def solve_quiz_and_get_code(self):

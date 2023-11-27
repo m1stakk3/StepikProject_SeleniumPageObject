@@ -2,6 +2,19 @@ import time
 import pytest
 import allure
 from pages.main_page import MainPage, ItemPage
+from pages.login_page import LoginPage
+
+
+@allure.title("Тест на отображение ссылки к странице логина")
+@allure.description("Проверяет возможность перехода с главной страницы на страницу логина")
+def test_guest_should_see_login_link(browser):
+
+    with allure.step("Переход на главную страницу сайта"):
+        page = MainPage(browser=browser, url="http://selenium1py.pythonanywhere.com/")
+        page.open()
+
+    with allure.step("Проверка ссылки на страницу логин"):
+        page.should_be_login_link()
 
 
 @allure.title("Тест на возможность перехода к странице логина")
@@ -16,11 +29,21 @@ def test_guest_can_go_to_login_page(browser):
         page.go_to_login_page()
 
 
-# def test_guest_should_see_login_link(browser):
-#     LINK = "http://selenium1py.pythonanywhere.com/"
-#     page = MainPage(browser, LINK)
-#     page.open()
-#     page.should_be_login_link()
+@allure.title("Тест страницы логина")
+@allure.description("Проверяет содержание страницы логина")
+def test_login_page_content(browser):
+
+    with allure.step("Переход на главную страницу сайта"):
+        page = LoginPage(browser=browser, url="http://selenium1py.pythonanywhere.com/")
+        page.open()
+
+    with allure.step("Переход на страницу логина"):
+        page.go_to_login_page()
+
+    with allure.step("Проврека содержимого страницы"):
+        page.should_be_login_link()
+
+
 #
 #
 # @pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
