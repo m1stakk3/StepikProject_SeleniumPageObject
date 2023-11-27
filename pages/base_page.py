@@ -1,6 +1,5 @@
 import math
 import logging
-
 from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
 
 
@@ -26,6 +25,7 @@ class BasePage:
         return True
 
     def solve_quiz_and_get_code(self):
+        logging.info("Solving quiz...")
         alert = self.browser.switch_to.alert
         x = alert.text.split(" ")[2]
         answer = str(math.log(abs((12 * math.sin(float(x))))))
@@ -37,4 +37,6 @@ class BasePage:
             logging.info(f"Your code: {alert_text}")
             alert.accept()
         except NoAlertPresentException:
-            logging.error("No second alert presented")
+            logging.info("No second alert presented [Good]")
+        else:
+            logging.error("Some unexpected alert!")
