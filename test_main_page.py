@@ -1,6 +1,5 @@
-import pytest
 import allure
-from pages import MainPage, LoginPage, ItemPage
+from pages import MainPage, LoginPage, BasketPage
 
 
 @allure.suite("Тесты основной страницы")
@@ -45,38 +44,23 @@ def test_login_page_content(browser):
         page.should_be_login_link()
 
 
-@allure.suite("Тесты страницы товара и корзины")
-@allure.title("Тест добавление товара в корзину")
-@allure.description("Уга буга товары")
-@pytest.mark.parametrize(
-    'link', [
-        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
-        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
-        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer2",
-        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer3",
-        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer4",
-        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer5",
-        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer6",
-        pytest.param(
-            "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7",
-            marks=pytest.mark.xfail
-        ),
-        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
-        "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"
-    ]
-)
-def test_guest_can_add_product_to_basket(browser, link):
+@allure.suite("Тесты основной страницы")
+@allure.title("Тест переход в корзину")
+@allure.description("Переходит в пустую корзину и ожидает текст, что корзина пуста")
+def test_guest_cant_see_product_in_basket_opened_from_main_page(browser):
 
-    with allure.step("Открытие страницы с товаром"):
-        page = ItemPage(browser=browser, url=link)
+    with allure.step("Переход на главную страницу сайта"):
+        page = MainPage(browser=browser, url="http://selenium1py.pythonanywhere.com/")
         page.open()
 
-    with allure.step("Добавление товара в корзину"):
-        page.save_item_name()
-        page.save_item_price()
-        page.add_to_basket()
+    with allure.step("Переход в корзину"):
+        page.go_to_basket()
 
-    with allure.step("Переход в корзину и сравнение данных страницы товара и в корзине"):
-        page.solve_quiz_and_get_code()
-        page.check_item_added_to_basket()
-        page.check_item_price_in_basket()
+    with allure.step("Ожидаем, что в корзине нет товаров"):
+        page = BasketPage(browser=browser, url=page.browser.current_url)
+        page.is_basket_empty()
+
+    with allure.step("Ожидаем, что есть текст о том что корзина пуста"):
+        page = BasketPage(browser=browser, url=page.browser.current_url)
+        page.is_basket_empty_message()
+        

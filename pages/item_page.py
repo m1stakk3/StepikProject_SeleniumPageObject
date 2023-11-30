@@ -48,3 +48,15 @@ class ItemPage(MainPage):
 
         info = self.browser.find_element(*BasketPageLocators.ITEM_PRICE).text
         assert info == self.item_price, "Item price in basket not equals before addition"
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(ItemPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def should_be_success_message(self):
+        assert self.is_element_present(*ItemPageLocators.SUCCESS_MESSAGE), \
+            "Success message is not presented, but should be"
+
+    def should_not_be_success_message_disappeared(self):
+        assert self.is_disappeared(ItemPageLocators.SUCCESS_MESSAGE), \
+            "Success message is disappeared, but should not be"

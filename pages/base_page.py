@@ -1,6 +1,9 @@
 import math
 import logging
-from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
+from pages.locators import BasePageLocators
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException, TimeoutException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait as Wait
 
 
 class BasePage:
@@ -14,6 +17,10 @@ class BasePage:
         logging.info("Getting url: {}".format(self.url))
         self.browser.get(self.url)
 
+    def go_to_basket(self):
+        logging.info("Going to basket")
+        self.browser.find_element(*BasePageLocators.BASKET_BUTTON).click()
+
     def is_element_present(self, how, what):
         logging.info("Trying to check presence of element")
         try:
@@ -22,6 +29,24 @@ class BasePage:
             logging.error(NoSuchElementException)
             return False
         logging.info("Element is present!")
+        return True
+
+    def is_not_element_present(self, locator, timeout=4):
+        logging.info("Trying to check not presence of element")
+        try:
+            Wait(self.browser, timeout).until(EC.presence_of_element_located(locator))
+        except TimeoutException:
+            return True
+        logging.info("Element is not present!")
+        return False
+
+    def is_disappeared(self, locator, timeout=4):
+        logging.info("Trying to check that element is disappeared")
+        try:
+            Wait(self.browser, timeout, 1, [TimeoutException]).until_not(EC.presence_of_element_located(locator))
+        except TimeoutException:
+            return False
+        logging.info("Element is disappeared")
         return True
 
     def solve_quiz_and_get_code(self):
