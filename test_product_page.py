@@ -139,7 +139,7 @@ class TestUserAddToBasketFromProductPage:
 
         link = "http://selenium1py.pythonanywhere.com/"
         email = str(time.time()) + "@dogemail.com"
-        password = "".join([random.choice(string.printable) for _ in range(10)])
+        password = "".join([random.choice(string.ascii_letters) for _ in range(10)])
 
         register_page = LoginPage(browser=browser, url=link)
         register_page.open()

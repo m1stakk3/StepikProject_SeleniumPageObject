@@ -5,27 +5,27 @@ from selenium.common.exceptions import NoSuchElementException
 
 
 class LoginPage(MainPage):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def should_be_login_page(self):
+    def should_be_login_page(self) -> None:
         self.should_be_login_url()
         self.should_be_login_form()
         self.should_be_register_form()
 
-    def should_be_login_url(self):
+    def should_be_login_url(self) -> None:
         logging.info("Checking current url of login page")
         assert self.browser.current_url() == "http://selenium1py.pythonanywhere.com/accounts/login/", "Not expected URL"
 
-    def should_be_login_form(self):
+    def should_be_login_form(self) -> None:
         logging.info("Checking logging form")
         assert self.is_element_present(*LoginPageLocators.LOGIN_FORM), "Did not find login form"
 
-    def should_be_register_form(self):
+    def should_be_register_form(self) -> None:
         logging.info("Checking registry form")
         assert self.is_element_present(*LoginPageLocators.REGISTER_FORM), "Did not find register form"
 
-    def register_new_user(self, email, password):
+    def register_new_user(self, email: str, password: str) -> None:
         self.go_to_login_page()
         self.should_be_login_form()
         self.should_be_register_form()
@@ -43,12 +43,11 @@ class LoginPage(MainPage):
 
         # действия с полями
         logging.info("Entering user data")
-        email_form.clear()
-        email_form.send_keys(email)
-        password_form.clear()
-        password_form.send_keys(password)
-        password_reenter_form.clear()
-        password_reenter_form.send_keys(password)
+        input_data = zip([email_form, password_form, password_reenter_form], [email, password, password])
+        for form, data in input_data:
+            while len(form.get_attribute('value')) != len(data):
+                form.clear()
+                form.send_keys(data)
         register_button.click()
 
         # проверка входа пользователя

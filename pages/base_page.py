@@ -7,25 +7,26 @@ from selenium.webdriver.support.wait import WebDriverWait as Wait
 
 
 class BasePage:
-    def __init__(self, browser, url, timeout=10):
+    def __init__(self, browser, url, timeout=10) -> None:
         logging.info("Creating browser exemplar")
         self.browser = browser
         self.url = url
         self.browser.implicitly_wait(timeout)
 
-    def open(self):
+    def open(self) -> None:
         logging.info("Getting url: {}".format(self.url))
         self.browser.get(self.url)
 
-    def go_to_basket(self):
+    def go_to_basket(self) -> None:
         logging.info("Going to basket")
         self.browser.find_element(*BasePageLocators.BASKET_BUTTON).click()
 
-    def should_be_authorized_user(self):
+    def should_be_authorized_user(self) -> None:
+        logging.info("Checking user authorization")
         assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
                                                                      " probably unauthorised user"
 
-    def is_element_present(self, how, what):
+    def is_element_present(self, how, what) -> bool:
         logging.info("Trying to check presence of element")
         try:
             self.browser.find_element(how, what)
@@ -35,7 +36,7 @@ class BasePage:
         logging.info("Element is present!")
         return True
 
-    def is_not_element_present(self, locator, timeout=4):
+    def is_not_element_present(self, locator, timeout=4) -> bool:
         logging.info("Trying to check not presence of element")
         try:
             Wait(self.browser, timeout).until(EC.presence_of_element_located(locator))
@@ -44,7 +45,7 @@ class BasePage:
         logging.info("Element is not present!")
         return False
 
-    def is_disappeared(self, locator, timeout=4):
+    def is_disappeared(self, locator, timeout=4) -> bool:
         logging.info("Trying to check that element is disappeared")
         try:
             Wait(self.browser, timeout, 1, [TimeoutException]).until_not(EC.presence_of_element_located(locator))
@@ -53,7 +54,7 @@ class BasePage:
         logging.info("Element is disappeared")
         return True
 
-    def solve_quiz_and_get_code(self):
+    def solve_quiz_and_get_code(self) -> None:
         logging.info("Solving quiz...")
         alert = self.browser.switch_to.alert
         x = alert.text.split(" ")[2]
