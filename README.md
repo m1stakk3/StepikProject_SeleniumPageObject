@@ -1,10 +1,16 @@
 # StepikProject_SeleniumPageObject
 
 Python 3.10
+
 Проект для курса https://stepik.org/course/575/.
 
 ### Процесс запуска
-pytest -v --tb=line --language=en -m need_review
+
+* Вызвать CMD в папке с тестами
+* python -m venv venv
+* if linux: source venv/bin/activate -> if windows: venv\Scripts\activate
+* pip install -r requirements.txt
+* pytest -v --tb=line --language=en -m need_review
 
 ## Дополнительная информация
 1. Проект был расширен фреймворком Allure для получения красивых отчетов.
