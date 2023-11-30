@@ -1,5 +1,6 @@
 # StepikProject_SeleniumPageObject
 
+Python 3.10
 Проект для курса https://stepik.org/course/575/.
 
 ### Процесс запуска
