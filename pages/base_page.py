@@ -21,6 +21,10 @@ class BasePage:
         logging.info("Going to basket")
         self.browser.find_element(*BasePageLocators.BASKET_BUTTON).click()
 
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"
+
     def is_element_present(self, how, what):
         logging.info("Trying to check presence of element")
         try:

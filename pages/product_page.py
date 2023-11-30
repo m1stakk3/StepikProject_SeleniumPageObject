@@ -1,7 +1,7 @@
 import logging
 from typing import Union
 from pages.main_page import MainPage
-from pages.locators import ItemPageLocators, BasketPageLocators
+from pages.locators import ProductPageLocators, BasketPageLocators
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
@@ -9,7 +9,7 @@ from selenium.common.exceptions import TimeoutException
 StrNone = Union[str, None]
 
 
-class ItemPage(MainPage):
+class ProductPage(MainPage):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -18,16 +18,16 @@ class ItemPage(MainPage):
 
     def add_to_basket(self):
         logging.info("Trying to add to basket")
-        self.browser.find_element(*ItemPageLocators.BASKET_BUTTON).click()
+        self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET_BUTTON).click()
 
     def save_item_name(self):
         logging.info("Getting item name")
-        self.item_name = self.browser.find_element(*ItemPageLocators.ITEM_NAME).text
+        self.item_name = self.browser.find_element(*ProductPageLocators.ITEM_NAME).text
         logging.info("Item name: {}".format(self.item_name))
 
     def save_item_price(self):
         logging.info("Getting item price")
-        self.item_price = self.browser.find_element(*ItemPageLocators.PRICE).text
+        self.item_price = self.browser.find_element(*ProductPageLocators.PRICE).text
         logging.info("Item price: {}".format(self.item_price))
 
     def check_item_added_to_basket(self):
@@ -50,13 +50,13 @@ class ItemPage(MainPage):
         assert info == self.item_price, "Item price in basket not equals before addition"
 
     def should_not_be_success_message(self):
-        assert self.is_not_element_present(ItemPageLocators.SUCCESS_MESSAGE), \
+        assert self.is_not_element_present(ProductPageLocators.SUCCESS_MESSAGE), \
             "Success message is presented, but should not be"
 
     def should_be_success_message(self):
-        assert self.is_element_present(*ItemPageLocators.SUCCESS_MESSAGE), \
+        assert self.is_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
             "Success message is not presented, but should be"
 
     def should_not_be_success_message_disappeared(self):
-        assert self.is_disappeared(ItemPageLocators.SUCCESS_MESSAGE), \
+        assert self.is_disappeared(ProductPageLocators.SUCCESS_MESSAGE), \
             "Success message is disappeared, but should not be"
